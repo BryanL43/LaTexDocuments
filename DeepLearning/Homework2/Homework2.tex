@@ -40,6 +40,7 @@ One of the well-known facts about Python is its relatively slow speed when perfo
 Compared to other popular programming languages like C++, Java, and even Node.js, Python tends to be slower in execution.
 One key reason for this performance difference is that Python is an interpreted language, meaning that while it first compiles code into byte code,
 it still executes instructions line by line at runtime rather than compiling everything into machine code beforehand.
+Everything is also stored as objects, even in lists.
 However, this limitation can be mitigated through specialized optimizations and external libraries.
 For instance, libraries like PyTorch use a data structure called a tensor to represent matrices.
 Tensors store data of a uniform type in contiguous memory, rather than as a collection of objects like Python lists.
@@ -108,7 +109,7 @@ def multiplyMatrices(A: list[list[float]], B: list[list[float]]) -> list[list[fl
 
 As we can see, the algorithm runs in O(\( n^3 \)) time complexity, which is an expensive operation.
 Additionally, the space complexity is also a concern, as each element in a plain Python list is stored as a separate object,
-leading to increased memory overhead.
+leading to increased memory occupation.
 That begs the differ, how can we improve the computational speed of doing matrix multiplication?
 
 As previously discussed, PyTorch has become a prominent tool in deep learning due to its flexibility and efficiency.
@@ -342,11 +343,15 @@ plt.legend();
 plt.show();
 \end{lstlisting}
 
+\newpage
+
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{TimeDiffPythonVsPyTorch.PNG}
     \caption{Time difference between PyTorch over Plain Python.}
 \end{figure}
+
+\noindent We can see that tensors appear to be operating with a run time speed closer to a logarithmic scale (flatter line), meaning that it has better performance for large matrices.
 
 \section{Conclusion}
 In conclusion, the experiments clearly demonstrate that using PyTorch tensors for matrix multiplication provides a substantial performance boost compared to the plain Python implementation.
