@@ -100,8 +100,8 @@ def multiplyMatrices(A: list[list[float]], B: list[list[float]]) -> list[list[fl
         for j in range(len(B[0])):
             for k in range(len(B)):
                 C[i][j] += A[i][k] * B[k][j];
-
-        return C;
+    
+    return C;
 \end{lstlisting}
 
 \noindent \\
@@ -128,9 +128,6 @@ W is a \( 90 \times m \) matrix, and X is a \( m \times 110 \) matrix, where
 \noindent\textbf{Creating the randomized matrices:}
 \begin{lstlisting}
 import random
-random.seed(737);
-
-m_vals = [m for m in range(10, 101, 10)];
 
 def generateMatrices(m: int) -> tuple[list[list[float]], list[list[float]]]:
     W = [[random.random() for _ in range(m)] for _ in range(90)];
@@ -141,40 +138,41 @@ def generateMatrices(m: int) -> tuple[list[list[float]], list[list[float]]]:
 
 \noindent \\
 
-\noindent The main experiment script will iterate through each $m$ values (representing different matrix sizes)
-to generate the corresponding W and X matrices, along with their tensor counterparts.
-It will then use IPython's timeit magic command to perform 7 runs of matrix multiplication
-for both the plain Python and vectorized implementations. We will then take the average of these runs,
-which will give us a more accurate estimate of the runtime for each implementation.
+\noindent The main experiment script iterates through each pair of generated \( W \) and \( X \) matrices,
+corresponding to different \( m \) values, and constructs their tensor counterparts.
+It then utilizes IPython's timeit magic command to conduct seven runs of matrix multiplication for both the plain Python and vectorized implementations.
+The average runtime from these runs provides a more precise estimate of each implementation's runtime performance.
 
 \noindent\rule{\textwidth}{0.4pt}
 \noindent\textbf{Running the 10 timing experiments:}
 \begin{lstlisting}
 import torch
-import timeit
+
+def convertToTensor(W, X):
+    W_t = torch.tensor(W);
+    X_t = torch.tensor(X);
+
+    return W_t, X_t;
+
+m_vals = [m for m in range(10, 110, 10)];
+matrices = [generateMatrices(m) for m in m_vals];
 
 pyTimeResults = [];
 tensorTimeResults = [];
-for m in m_vals:
-    print(f"Iteration with m value of {m}:");
-
-    # Original list matrices
-    W, X = generateMatrices(m);
-
+for W, X in matrices:
     # Create the tensor matrices
-    W_t = torch.tensor(W);
-    X_t = torch.tensor(X);
+    W_t, X_t = convertToTensor(W, X);
 
     # Time the plain Python matrix multiplication
     pythonTime = %timeit -o multiplyMatrices(W, X);
     pyTimeResults.append(pythonTime.average);
 
     # Time the torch matrix multiplication
-    tensorTime = %timeit -o torch.matmul(W_t, X_t);
+    tensorTime = %timeit -o W_t.matmul(X_t);
     tensorTimeResults.append(tensorTime.average);
 \end{lstlisting}
 
-\newpage
+\noindent \\
 
 \noindent The timeit function produces an output for each iteration, shown below.
 The table reveals that, in the plain Python implementation, the magic function is executed only 10 times, while PyTorch runs it 10,000 times.
@@ -188,23 +186,23 @@ Additionally, the time per loop is considerably lower for the PyTorch implementa
         \cline{2-3}
             & 10 loops each (Plain Python) & 10,000 loops each (PyTorch) \\
         \hline
-        10 & 25.7 ms $\pm$ 4.07 ms & 23.9 $\mu$s $\pm$ 2.73 $\mu$s \\
+        10  & 21.9 ms $\pm$ 1.63 ms  & 24.7 $\mu$s $\pm$ 7.46 $\mu$s  \\
         \hline
-        20 & 41.2 ms $\pm$ 262 $\mu$s & 23 $\mu$s $\pm$ 329 ns \\
+        20  & 40.7 ms $\pm$ 4.84 ms  & 24.4 $\mu$s $\pm$ 1.44 $\mu$s  \\
         \hline
-        30 & 57.2 ms $\pm$ 418 $\mu$s & 25 $\mu$s $\pm$ 1.34 $\mu$s \\
+        30  & 55.6 ms $\pm$ 813 $\mu$s  & 24.9 $\mu$s $\pm$ 1.05 $\mu$s  \\
         \hline
-        40 & 81.6 ms $\pm$ 8.88 ms & 28.1 $\mu$s $\pm$ 1.18 $\mu$s \\
+        40  & 72.6 ms $\pm$ 635 $\mu$s  & 27.1 $\mu$s $\pm$ 2.72 $\mu$s  \\
         \hline
-        50 & 96.7 ms $\pm$ 2.26 ms & 28.7 $\mu$s $\pm$ 688 ns \\
+        50  & 92.0 ms $\pm$ 4.04 ms  & 29.1 $\mu$s $\pm$ 1.48 $\mu$s  \\
         \hline
-        60 & 111 ms $\pm$ 1.48 ms & 32.2 $\mu$s $\pm$ 4.72 $\mu$s \\
+        60  & 109 ms $\pm$ 4.53 ms  & 30.8 $\mu$s $\pm$ 1.64 $\mu$s  \\
         \hline
-        70 & 134 ms $\pm$ 592 $\mu$s & 30.5 $\mu$s $\pm$ 570 ns \\
+        70  & 126 ms $\pm$ 1.54 ms  & 33.3 $\mu$s $\pm$ 1.86 $\mu$s  \\
         \hline
-        80 & 150 ms $\pm$ 3.18 ms & 32.2 $\mu$s $\pm$ 264 ns \\
+        80  & 144 ms $\pm$ 3.98 ms  & 35.3 $\mu$s $\pm$ 1.68 $\mu$s  \\
         \hline
-        90 & 172 ms $\pm$ 608 $\mu$s & 38.2 $\mu$s $\pm$ 2.54 $\mu$s \\
+        90  & 162 ms $\pm$ 4.22 ms  & 38.9 $\mu$s $\pm$ 3.51 $\mu$s  \\
         \hline
     \end{tabular}
     \caption{Performance metrics for different m values.}
@@ -223,7 +221,7 @@ when handling such a large computation.
         \cline{2-3}
         & 1 loop (Plain Python) & 10,000 loops (PyTorch) \\
         \hline
-        100 & 183 ms $\pm$ 3.94 ms & 38.5 $\mu$s $\pm$ 3.03 $\mu$s \\
+        100 & 179 ms $\pm$ 2.87 ms & 41.8 $\mu$s $\pm$ 8.09 $\mu$s \\
         \hline
     \end{tabular}
     \caption{Performance metrics for m value of 100.}
@@ -235,24 +233,24 @@ print out the average of the timeit function below.
 \noindent\rule{\textwidth}{0.4pt}
 \noindent\textbf{Displaying the average time results for the matrix multiplication experiment:}
 \begin{lstlisting}
-print("Time results for timeit tests on regular python matrices:");
+print("Average Time results for timeit tests on regular python matrices:");
 print(pyTimeResults);
 
-Time results for timeit tests on regular python matrices:
-[0.02568126999987206, 0.041184372857346066, 0.05717241571442823, 0.08162844285720243, 0.09673111714291736, 0.1107446571429526, 0.13369511714263355, 0.1497053142857372, 0.17162189714269646, 0.1831118428568256]
+Average Time results for timeit tests on regular python matrices:
+[0.02194325428572483, 0.04067932000034489, 0.05562064714301544, 0.07257928000014675, 0.0919591871429085, 0.10945918000028801, 0.12607538285686, 0.14421578714245697, 0.16206269857128583, 0.17928888571415363]
 
-print("Time results for timeit tests on tensor matrices:");
+print("Average Time results for timeit tests on tensor matrices:");
 print(tensorTimeResults);
 
-Time results for timeit tests on tensor matrices:
-[2.386830857140012e-05, 2.3007501428635025e-05, 2.5019531428759887e-05, 2.8062202857212727e-05, 2.870331714283176e-05, 3.223921571438301e-05, 3.049636571408233e-05, 3.221754571433329e-05, 3.8243817142730616e-05, 3.848362714291267e-05]
+Average Time results for timeit tests on tensor matrices:
+[2.469240571476153e-05, 2.4358931428495062e-05, 2.4857308571725818e-05, 2.7050777142825868e-05, 2.912901999994314e-05, 3.0784302856981025e-05, 3.328427285700205e-05, 3.5271571428373656e-05, 3.8860460000536737e-05, 4.182551857167189e-05]
 \end{lstlisting}
 
 \section{Visualizing the Results}
 Using the retrieved data, we will plot the speed improvement ratio between the plain Python and PyTorch implementations, calculated using the following formula:
 
 \begin{equation*}
-    \text{speed improvement ratio} = \sum_{i = 0}^{i < len(m)} \frac{\text{pyTimeResults[i]}}{\text{tensorTimeResults[i]}}
+    \text{speed improvement ratio} = \sum_{i = 0}^{i < n} \frac{\text{pyTimeResults[i]}}{\text{tensorTimeResults[i]}}
 \end{equation*}
 
 \noindent Additionally, I will also compute the line of best fit for the data points using the least squares method.
@@ -291,12 +289,12 @@ On the other hand, b is a vertical vector of the speed improvement ratio values.
 \newpage
 
 \noindent\rule{\textwidth}{0.4pt}
-\noindent\textbf{Plotting the graph:}
+\noindent\textbf{Plotting the speed improvement graph:}
 \begin{lstlisting}
 import matplotlib.pyplot as plt
 import numpy as np
 
-speedImprovementRatio = [pyTimeResults[i] / tensorTimeResults[i] for i in range(len(pyTimeResults))];
+speedImprovementRatio = [py / tensor for py, tensor in zip(pyTimeResults, tensorTimeResults)];
 
 # Compute the line of best fit using least squares solution
 A = np.column_stack((np.ones(len(m_vals)), m_vals)); # Col of 1s and m_vals
@@ -309,15 +307,12 @@ beta = x_star[1];
 
 bestFitLine = [alpha + beta * m for m in m_vals]; # Formulate the best fit line
 
-plt.figure(figsize=(10, 6));
-plt.plot(m_vals, speedImprovementRatio, marker='o', linestyle='-', color='b', label="Speed Improvement");
-plt.plot(m_vals, bestFitLine, marker='^',linestyle='-', color='r', label="Best Fit Line");
+plt.plot(m_vals, speedImprovementRatio, color='b', label="Speed Improvement");
+plt.plot(m_vals, bestFitLine, color='r', label="Best Fit Line");
 
-plt.xticks(m_vals);
 plt.xlabel("Matrix Size (m)");
 plt.ylabel("Speed Improvement Ratio (Plain / Vectorized)");
 plt.title("Speed Improvement of PyTorch Vectorized Multiplication Over Plain Python");
-plt.grid(True);
 plt.legend();
 plt.show();
 \end{lstlisting}
@@ -327,15 +322,38 @@ plt.show();
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{PythonVSPyTorch.PNG}
-    \caption{A simple diagram of the camera matrix: x = PX.}
+    \caption{Speed improvement ratio of PyTorch over Plain Python.}
+\end{figure}
+
+\noindent Additionally, for a more adherent difference, we will be plotting the time difference between the two implementations.
+
+\noindent\rule{\textwidth}{0.4pt}
+\noindent\textbf{Plotting the time difference:}
+\begin{lstlisting}
+plt.plot(m_vals, [p for p in pyTimeResults], color='b', label="Plain Python");
+plt.plot(m_vals, [t for t in tensorTimeResults], color='r', label="PyTorch Tensor");
+
+# plt.xticks(m_vals);
+plt.xlabel("Matrix Size (m)");
+plt.ylabel("Time (s)");
+plt.yscale("log");
+plt.title("Matrix Muliplication Time Comparison");
+plt.legend();
+plt.show();
+\end{lstlisting}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{TimeDiffPythonVsPyTorch.PNG}
+    \caption{Time difference between PyTorch over Plain Python.}
 \end{figure}
 
 \section{Conclusion}
-In conclusion, from the experiments, we can see that using PyTorch tensors for matrix multiplication
-offers a significant performance improvement over the plain Python implementation.
-By enforcing a homogenous data type for the tensors, the computation time for matrix multiplication can be significantly reduced.
-Not only can we reduce the need to reference a new object for each matrix element, we can also compact the size of its data by almost 6x less.
-Such optimizations are necessary for deep learning applications, where intensive matrix operations are frequently performed.
+In conclusion, the experiments clearly demonstrate that using PyTorch tensors for matrix multiplication provides a substantial performance boost compared to the plain Python implementation.
+While some variation exists due to standard deviations, the PyTorch implementation consistently outperforms its plain Python counterpart.
+By enforcing a homogeneous data type for tensors, computation time is significantly reduced.
+Additionally, this approach minimizes the need to reference new objects for each matrix element and compacts data storage by nearly sixfold.
+These optimizations are crucial for deep learning applications, where efficient matrix operations are essential for handling large-scale computations.
 
 \newpage
 
