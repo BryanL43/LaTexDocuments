@@ -1,0 +1,86 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsthm, graphicx, geometry, listings, xcolor, url, enumitem, fancyhdr, multirow, hyperref}
+\geometry{margin=1in}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\pagestyle{fancy}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+}
+
+\lhead{SFSU, CSC 671-01}
+\chead{Spring 2025}
+\rhead{Deep Learning}
+
+\title{Project Draft - Brain Tumor Classification}
+\author{Bryan Lee, Arjun Gill, Demetrio Ricardo Calimag, \& Hugo Gomez}
+\date{April 8, 2025}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+\section{Introduction}
+In this project, we aim to develop a deep learning model using the U-Net architecture to classify 
+brain tumors from MRI images. A brain tumor is abnormal cell growth that can occur in any 
+part of the brain or skull. There are over 120 types of brain tumors. The 5-year survival 
+rate for those with cancerous brain or CNS tumors is about 34\% for men and 36\% for women. 
+Given the high mortality rate, early detection and treatment are critical for improving outcomes.  
+MRI is the best method for detecting tumors, but manual analysis by radiologists is error-prone due to 
+the complexity of brain tumors. This project aims to provide a secondary tool to automate detection
+and provide additional layer of accuracy to radiologists.
+
+\section{Task}
+The goal of the model is to classify brain tumors into one of the four categories given an MRI image of the brain:
+\begin{enumerate}
+    \item \textbf{Glioma}: A type of intra-axial brain tumor that originates in the glial cells, most often found in the cerebrum 
+    (the large, outer part of the brain), but also in the cerebellum (base of the brain).
+    \item \textbf{Meningioma}: A type of brain tumor that originates in the meninges, 
+    which are the outer three layers of tissue between the skull and the brain. 
+    \item \textbf{Pituitary tumor}: An abnormal growth in the pituitary gland, located at the base of the brain, 
+    behind the back of the nose.
+    \item \textbf{No tumor}
+\end{enumerate}
+
+\section{Dataset}
+The dataset our group chose is the \textbf{Brain Tumor Classification (MRI)} dataset from Kaggle.
+It contains a training set of approximately 800 images for glioma, meningioma, and pituitary tumors, with an additional 400 images of healthy MRI brain scans.
+It also contains a testing set of approximately 100 images for each case. \\
+
+\noindent For more details, visit: \\
+\href{https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri/data}{https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri/data}.
+
+\section{How will we go Forward/Roles}
+We decided on four roles that each person will focus on. Each of us has our task, but we still help out others
+when needed, as well as other aspects of the project that may be needed to complete it.
+This will allow us to each have a task, ensuring everyone contributes while also learning from one another about their work.
+\begin{itemize}
+    \item \textbf{Data ingestion \& processing}: Hugo Gomez
+    \item \textbf{Modeling aka building the U-net}: Bryan Lee
+    \item \textbf{Train/Evaluate}: Arjun Gill
+    \item \textbf{Data modeling/visualization}: Demetrio Ricardo Calimag
+\end{itemize}
+
+\newpage
+
+\begin{thebibliography}{4}
+    \bibitem{Brain Tumor information}
+    \url{https://www.hopkinsmedicine.org/health/conditions-and-diseases/brain-tumor}.
+    
+    \bibitem{Gliomas tumor information}
+    \url{https://www.hopkinsmedicine.org/health/conditions-and-diseases/gliomas}.
+
+    \bibitem{Kaggle information}
+    \url{https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri/data}.
+
+    \bibitem{Meningioma tumor information}
+    \url{https://www.hopkinsmedicine.org/health/conditions-and-diseases/meningioma}.
+
+    \bibitem{Pituitary tumor information}
+    \url{https://www.hopkinsmedicine.org/health/conditions-and-diseases/pituitary-tumors}.
+\end{thebibliography}
+
+\end{document}
