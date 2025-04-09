@@ -24,7 +24,7 @@
 \thispagestyle{fancy}
 
 \section{Introduction}
-In this project, we aim to develop a deep learning model using the U-Net architecture to classify 
+In this project, we aim to develop a deep learning model using the EfficientNet CNN architecture to classify 
 brain tumors from MRI images. A brain tumor is abnormal cell growth that can occur in any 
 part of the brain or skull. There are over 120 types of brain tumors. The 5-year survival 
 rate for those with cancerous brain or CNS tumors is about 34\% for men and 36\% for women. 
@@ -36,19 +36,20 @@ and provide additional layer of accuracy to radiologists.
 \section{Task}
 The goal of the model is to classify brain tumors into one of the four categories given an MRI image of the brain:
 \begin{enumerate}
-    \item \textbf{Glioma}: A type of intra-axial brain tumor that originates in the glial cells, most often found in the cerebrum 
+    \item \textbf{Glioma Tumor}: A type of intra-axial brain tumor that originates in the glial cells, most often found in the cerebrum 
     (the large, outer part of the brain), but also in the cerebellum (base of the brain).
-    \item \textbf{Meningioma}: A type of brain tumor that originates in the meninges, 
+    \item \textbf{Meningioma Tumor}: A type of brain tumor that originates in the meninges, 
     which are the outer three layers of tissue between the skull and the brain. 
-    \item \textbf{Pituitary tumor}: An abnormal growth in the pituitary gland, located at the base of the brain, 
+    \item \textbf{Pituitary Tumor}: An abnormal growth in the pituitary gland, located at the base of the brain, 
     behind the back of the nose.
-    \item \textbf{No tumor}
+    \item \textbf{No Tumor}
 \end{enumerate}
 
 \section{Dataset}
 The dataset our group chose is the \textbf{Brain Tumor Classification (MRI)} dataset from Kaggle.
 It contains a training set of approximately 800 images for glioma, meningioma, and pituitary tumors, with an additional 400 images of healthy MRI brain scans.
-It also contains a testing set of approximately 100 images for each case. \\
+It also contains a testing set of approximately 100 images for each case.
+If needed an additional dataset with the same tumor classification can be merged to increase the size of the dataset. \\
 
 \noindent For more details, visit: \\
 \href{https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri/data}{https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri/data}.
@@ -58,8 +59,8 @@ We decided on four roles that each person will focus on. Each of us has our task
 when needed, as well as other aspects of the project that may be needed to complete it.
 This will allow us to each have a task, ensuring everyone contributes while also learning from one another about their work.
 \begin{itemize}
-    \item \textbf{Data ingestion \& processing}: Hugo Gomez
-    \item \textbf{Modeling aka building the U-net}: Bryan Lee
+    \item \textbf{Data ingestion, augmentation, \& processing}: Hugo Gomez
+    \item \textbf{Modeling aka building the EfficientNet}: Bryan Lee
     \item \textbf{Train/Evaluate}: Arjun Gill
     \item \textbf{Data modeling/visualization}: Demetrio Ricardo Calimag
 \end{itemize}
