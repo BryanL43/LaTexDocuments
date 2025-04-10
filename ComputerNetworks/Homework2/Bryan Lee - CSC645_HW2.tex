@@ -34,7 +34,7 @@
         For example, dns.umass.edu is the authoritative server for gaia.cs.umass.edu, meaning it knows the IP address of gaia.cs.umass.edu.
     \end{enumerate}
     Now, if the host cs.sfsu.edu wants to know the IP address of gaia.cs.umass.edu, it will first query its local DNS server, dns.sfsu.edu, asking for the IP address. 
-    , dns.sfsu.edu doesn’t know the IP address of gaia.cs.umass.edu, so it will query a root DNS server. 
+    Since, dns.sfsu.edu doesn't know the IP address of gaia.cs.umass.edu, it will query a root DNS server. 
     The root server replies with the IP address of the .edu TLD server. 
     Then, dns.sfsu.edu queries the .edu TLD DNS server, which replies with the IP address of the authoritative DNS server, dns.umass.edu. 
     Finally, dns.sfsu.edu queries dns.umass.edu, which knows and returns the IP address of gaia.cs.umass.edu. 
