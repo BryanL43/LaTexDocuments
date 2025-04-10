@@ -64,11 +64,15 @@
 }}
 
 \newcommand{\answerThreePartOne}{\textbf{
-    Answer
+    The other packets will arrive to the sender but are discarded and no ACKs will be sent. 
+    After the timeout, the sender will retransmit the first five packet.
+    This happens as Go-Back-N requires the receiver only to accept the next expected in-order packet, so if a packet is lost, the subsequent packets are ignored, triggering a resend once timeout.
 }}
 
 \newcommand{\answerThreePartTwo}{\textbf{
-    Answer
+    The sender doesn't receive any ACK, so after a timeout, it retransmits the first packet and all subsequent packets in the window, even if they were already received. 
+    The receiver discards the duplicates and resends the missing ACK. 
+    Once the sender receives the missing ACK, it sends the next window of packets.
 }}
 
 \newcommand{\answerThreePartThree}{\textbf{
@@ -80,6 +84,29 @@
     For the other case where I dropped the first ACK, it does the same thing as when I dropped the first packet.
     However, the only difference is that it sends out a DUPACK, which once recieved by the sender, will then transmit
     the next batch.
+    \\\\
+    Overall, Selective Repeat allows the receiver to accept out-of-order packets and buffer them compared to Go-Back-N.
+}}
+
+\newcommand{\answerFourPartOne}{\textbf{
+    The first segment starts at the sequence number of 127 and contains 80 bytes. The second segment's sequence number is then: 127 + 80 = 207.
+}}
+
+\newcommand{\answerFourPartTwo}{\textbf{
+    If the first segment of sequence number 127 and 80 bytes of data arrives first, Host B acknowledges the next expected byte: 127 + 80 = 207.
+}}
+
+\newcommand{\answerFourPartThree}{\textbf{
+    If the second segment of sequence number 207 and 40 bytes of data arrives first, Host B still expects byte 127. 
+    Since we are communicating via TCP, out-of-order segments do not update the ACK number, so the ACK number is 127.
+}}
+
+\newcommand{\answerFourPartFour}{\textbf{
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.9\linewidth]{TCP_Part_D.PNG}
+        \caption{Part D Solution}
+    \end{figure}
 }}
 
 \begin{enumerate}
@@ -102,6 +129,24 @@
             \item Repeat a and b with the Selective Repeat and answer the above questions again. \\\\ \answerThreePartThree
         \end{enumerate}
     
+    \item (25 Points) Host A and B are communicating over a TCP connection, and Host B has
+    already received all bytes up through byte 126 from A. Suppose Host A then sends two
+    segments to Host B back-to-back. The first and second segments contain 80 and 40 bytes
+    of data, respectively. In the first segment, the sequence number is 127. Host B sends an
+    acknowledgment whenever it receives a segment from Host A.
+        \begin{enumerate}[label=(\alph*)]
+            \item In the second segment sent from Host A to Host B, what is the sequence number? \\\\ \answerFourPartOne
+            \item If the first segment arrives before the second segment, in the acknowledgment of the first
+            arriving segment, what is the acknowledgment number? \\\\ \answerFourPartTwo
+            \item If the second segment arrives before the first segment, in the acknowledgment of the first
+            arriving segment, what is the acknowledgment number? \\\\ \answerFourPartThree
+            \item Suppose the two segments sent by A arrive in order at B. The first acknowledgment is lost
+            and the second acknowledgment arrives after the first timeout interval. Draw a timing
+            diagram, showing these segments and all other segments and acknowledgments sent.
+            (Assume there is no additional packet loss.) For each segment in your figure, provide the
+            sequence number; for each acknowledgment that you add, provide the acknowledgment
+            number. \\\\ \answerFourPartFour
+        \end{enumerate}
 \end{enumerate}
 
 
